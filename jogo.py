@@ -23,7 +23,7 @@ tempo = pygame.time.Clock()
 tela = pygame.display.set_mode((largura,altura))
 
 #Define O nome que vai aparecer na tela
-pygame.display.set_caption('Dinosaur')
+pygame.display.set_caption('Junque Jumper')
 
 #Define as imagens
 # image = pygame.image.load('assets/img/logo-madfox.png').convert()
