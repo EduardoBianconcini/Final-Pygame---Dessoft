@@ -54,3 +54,6 @@ Chao =      pygame.image.load(os.path.join('outro','chão.png'))
 End_game =  pygame.image.load(os.path.join('outro','Cloud.png'))
 
 Reset =     pygame.image.load(os.path.join('outro','Reset.png'))
+
+
+
