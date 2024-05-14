@@ -4,7 +4,7 @@
 
 2. Membros: Eduardo Bianconcini, Pedro Monteiro, Lucas Briones
 
-3. Jogo: Jogo do Dinossauro
+3. Jogo: Jogo do Dinossauro Google
 
 4. Vídeo Curso
 
