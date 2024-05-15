@@ -41,3 +41,27 @@ Cacto_P = [pygame.image.load(os.path.join('cacto', 'SmallCactus1.png')),
 Ptero = [pygame.image.load(os.path.join('ptero', 'Bird1.png')),
          pygame.image.load(os.path.join('ptero', 'Bird2.png'))]
 Chao = pygame.image.load(os.path.join('outro', 'chão.png'))
+
+#Define a fonte do contador
+fonte = pygame.font.Font(None, 36)
+
+#Cria-se a classe dinossauro, seu posicionamento, e as funções que se relacionam a ele
+class Dinossauro:
+    X_POS = 80
+    Y_POS = 500
+    Y_POS_AGACHAR = 530
+    VEL_PULO = 8.5
+
+    def __init__(self):
+        self.img_agachar = AGACHAR
+        self.img_correr = CORRIDA
+        self.img_pular = PULO
+        self.agachado = False
+        self.correndo = True
+        self.pulando = False
+        self.indice_passo = 0
+        self.vel_pulo = self.VEL_PULO
+        self.imagem = self.img_correr[0]
+        self.retangulo = self.imagem.get_rect()
+        self.retangulo.x = self.X_POS
+        self.retangulo.y = self.Y_POS
