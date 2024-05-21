@@ -167,3 +167,56 @@ class Dinossauro:
         return False
 
 dino = Dinossauro()
+
+class Chao:
+    """Classe que representa o chão no jogo."""
+
+    VELOCIDADE = 15  # Aumentar a velocidade inicial
+
+    def __init__(self, imagem):
+        """Inicializa o chão com a imagem fornecida."""
+        self.imagem = imagem
+        self.largura = imagem.get_width()
+        self.x1 = 0
+        self.x2 = self.largura
+        self.altura = imagem.get_height()
+
+    def atualizar(self, fator_velocidade):
+        """Atualiza a posição do chão com base na velocidade."""
+        self.x1 -= self.VELOCIDADE * fator_velocidade
+        self.x2 -= self.VELOCIDADE * fator_velocidade
+        if self.x1 + self.largura < 0:
+            self.x1 = self.x2 + self.largura
+        if self.x2 + self.largura < 0:
+            self.x2 = self.x1 + self.largura
+
+    def desenhar(self, tela):
+        """Desenha o chão na tela."""
+        tela.blit(self.imagem, (self.x1, altura - self.altura - 10))
+        tela.blit(self.imagem, (self.x2, altura - self.altura - 10))
+
+chao = Chao(CHAO)
+
+class Obstaculo:
+    """Classe que representa um obstáculo no jogo."""
+
+    VELOCIDADE = Chao.VELOCIDADE
+
+    def __init__(self, imagens):
+        """
+        Inicializa o obstáculo com uma imagem aleatória.
+
+        Args:
+            imagens (list): Lista de imagens para o obstáculo.
+        """
+        self.imagens = imagens
+        self.imagem = self.imagens[0] if imagens == PTERO else random.choice(imagens)
+        self.retangulo = self.imagem.get_rect()
+        self.retangulo.x = largura
+        if imagens == PTERO:
+            self.retangulo.y = altura - self.retangulo.height - random.choice([150, 100, 70])  # Pterodátilos em alturas diferentes
+            self.animar = True
+            self.indice_animacao = 0
+        else:
+            self.retangulo.y = altura - self.retangulo.height - 10  # Cactos no chão
+            self.animar = False
