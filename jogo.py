@@ -220,3 +220,56 @@ class Obstaculo:
         else:
             self.retangulo.y = altura - self.retangulo.height - 10  # Cactos no chão
             self.animar = False
+
+    def atualizar(self, fator_velocidade):
+        """Atualiza a posição do obstáculo com base na velocidade."""
+        self.retangulo.x -= self.VELOCIDADE * fator_velocidade
+        if self.animar:
+            self.indice_animacao += 1
+            if self.indice_animacao >= 10:
+                self.indice_animacao = 0
+            self.imagem = self.imagens[self.indice_animacao // 5]
+
+    def desenhar(self, tela):
+        """Desenha o obstáculo na tela."""
+        tela.blit(self.imagem, self.retangulo)
+
+    def fora_da_tela(self):
+        """Verifica se o obstáculo saiu da tela."""
+        return self.retangulo.x < -self.retangulo.width
+
+def pegar_obstaculo_aleatorio():
+    """Retorna um obstáculo aleatório (cacto grande, pequeno ou pterodátilo)."""
+    if random.randint(0, 2) == 0:
+        return Obstaculo(CACTO_G)
+    elif random.randint(0, 2) == 1:
+        return Obstaculo(CACTO_P)
+    else:
+        return Obstaculo(PTERO)
+
+def esperar_acao_inicio():
+    """Aguarda até que o jogador pressione qualquer tecla para iniciar o jogo."""
+    esperando = True
+    while esperando:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if evento.type == pygame.KEYDOWN:
+                esperando = False
+
+def exibir_tela_inicio():
+    """Exibe a tela de início e aguarda a ação do jogador."""
+    tela.fill(BRANCO)
+    texto_inicio = fonte_game_over.render('Pressione qualquer tecla para começar', True, PRETO)
+    controles = [
+        "Controles:",
+        "Espaço: Pular",
+        "S: Agachar"
+    ]
+    tela.blit(texto_inicio, (largura // 2 - texto_inicio.get_width() // 2, altura // 2))
+    for i, controle in enumerate(controles):
+        texto_controle = fonte.render(controle, True, PRETO)
+        tela.blit(texto_controle, (largura // 2 - texto_controle.get_width() // 2, altura // 2 + 50 + i * 30))
+    pygame.display.update()
+    esperar_acao_inicio()
