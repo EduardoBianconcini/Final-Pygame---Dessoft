@@ -307,8 +307,36 @@ obstaculos = []
 temporizador_obstaculo = 0
 pontuacao = 0
 
-# Reproduz o som ambiente em loop
-som_ambiente.play(-1)
 
 # Exibe a tela de início
 exibir_tela_inicio()
+
+rodando = True
+while rodando:
+    tela.fill(BRANCO)
+    entrada_usuario = pygame.key.get_pressed()
+
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            rodando = False
+
+    # Incrementa a pontuação e ajusta a velocidade
+    pontuacao += 1
+    fator_velocidade = 1 + (pontuacao // 100) * 0.05  
+
+    dino.atualizar(entrada_usuario, fator_velocidade)
+    dino.desenhar(tela)
+    chao.atualizar(fator_velocidade)
+    chao.desenhar(tela)
+
+    if temporizador_obstaculo == 0:
+        obstaculos.append(pegar_obstaculo_aleatorio())
+        temporizador_obstaculo = 50
+
+    for obstaculo in obstaculos:
+        obstaculo.atualizar(fator_velocidade)
+        obstaculo.desenhar(tela)
+        if obstaculo.fora_da_tela():
+            obstaculos.remove(obstaculo)
+
+    temporizador_obstaculo -= 1 if temporizador_obstaculo > 0 else 0
