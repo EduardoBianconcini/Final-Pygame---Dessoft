@@ -1,6 +1,6 @@
 # Final-Pygame---Dessoft
 
-1. Título: Junque Jumper (JJ)
+1. Título: Junk Jumper (JJ)
 
 2. Membros: Eduardo Bianconcini, Pedro Monteiro, Lucas Briones
 
