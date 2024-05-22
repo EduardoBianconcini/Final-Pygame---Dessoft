@@ -273,3 +273,42 @@ def exibir_tela_inicio():
         tela.blit(texto_controle, (largura // 2 - texto_controle.get_width() // 2, altura // 2 + 50 + i * 30))
     pygame.display.update()
     esperar_acao_inicio()
+
+def exibir_tela_game_over():
+    """Exibe a tela de game over e aguarda a ação do jogador."""
+    tela.fill(BRANCO)
+    tela.blit(GAME_OVER, (largura // 2 - GAME_OVER.get_width() // 2, altura // 2 - 100))
+    botao_reset_rect = tela.blit(RESET, (largura // 2 - RESET.get_width() // 2, altura // 2))
+    pygame.display.update()
+    esperar_acao(botao_reset_rect)
+
+def esperar_acao(botao_reset_rect):
+    """Aguarda até que o jogador clique no botão de reset."""
+    esperando = True
+    while esperando:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if botao_reset_rect.collidepoint(evento.pos):
+                    esperando = False
+
+def reiniciar_jogo():
+    """Reinicia o jogo, resetando todas as variáveis."""
+    global obstaculos, temporizador_obstaculo, pontuacao, dino, chao
+    obstaculos = []
+    temporizador_obstaculo = 0
+    pontuacao = 0
+    dino = Dinossauro()
+    chao = Chao(CHAO)
+
+obstaculos = []
+temporizador_obstaculo = 0
+pontuacao = 0
+
+# Reproduz o som ambiente em loop
+som_ambiente.play(-1)
+
+# Exibe a tela de início
+exibir_tela_inicio()
