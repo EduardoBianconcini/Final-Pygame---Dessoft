@@ -171,7 +171,7 @@ dino = Dinossauro()
 class Chao:
     """Classe que representa o chão no jogo."""
 
-    VELOCIDADE = 15  # Aumentar a velocidade inicial
+    VELOCIDADE = 15  
 
     def __init__(self, imagem):
         """Inicializa o chão com a imagem fornecida."""
@@ -214,11 +214,11 @@ class Obstaculo:
         self.retangulo = self.imagem.get_rect()
         self.retangulo.x = largura
         if imagens == PTERO:
-            self.retangulo.y = altura - self.retangulo.height - random.choice([150, 100, 70])  # Pterodátilos em alturas diferentes
+            self.retangulo.y = altura - self.retangulo.height - random.choice([150, 100, 70])  
             self.animar = True
             self.indice_animacao = 0
         else:
-            self.retangulo.y = altura - self.retangulo.height - 10  # Cactos no chão
+            self.retangulo.y = altura - self.retangulo.height - 10 
             self.animar = False
 
     def atualizar(self, fator_velocidade):
