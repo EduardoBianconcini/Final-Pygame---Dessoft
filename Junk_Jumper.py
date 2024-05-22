@@ -340,3 +340,19 @@ while rodando:
             obstaculos.remove(obstaculo)
 
     temporizador_obstaculo -= 1 if temporizador_obstaculo > 0 else 0
+
+    
+    # Exibe a pontuação
+    texto_pontuacao = fonte.render(f"{pontuacao:04}", True, PRETO)
+    tela.blit(texto_pontuacao, (900, 20))
+
+    pygame.display.update()
+    tempo.tick(30)
+
+    # Verifica colisão
+    if dino.colidir(obstaculos):
+        som_colisao.play()
+        exibir_tela_game_over()
+        reiniciar_jogo()
+
+pygame.quit()
