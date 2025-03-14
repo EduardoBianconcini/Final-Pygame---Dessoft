@@ -46,30 +46,23 @@ GAME_OVER = pygame.image.load(os.path.join('outro', 'GameOver.png'))
 RESET = pygame.image.load(os.path.join('outro', 'Reset.png'))
 
 # Função para criar sons simples
+def converter_amostra_para_bytes(valor):
+    
+    return valor.to_bytes(2, byteorder='little', signed=True)
+
 def criar_som(frequencia, duracao, volume=1.0):
-    """
-    Cria um som simples.
-
-    Args:
-        frequencia (float): Frequência do som (Hz).
-        duracao (float): Duração do som (s).
-        volume (float, opcional): Volume do som (0.0 a 1.0). Padrão = 1.0.
-
-    Retorna:
-        pygame.mixer.Sound: Objeto de som gerado.
-    """
-    sample_rate = 44100
+    sample_rate = 44100  # Amostras por segundo
     n_samples = int(round(duracao * sample_rate))
-    buf = bytearray()
+    amplitude = int(32767 * volume)
+    bytes_list = []  # Lista para armazenar os pedaços em bytes
 
-    amplitude = 32767 * volume
     for s in range(n_samples):
-        t = float(s) / sample_rate
-        val = int(amplitude * math.sin(2.0 * math.pi * frequencia * t))
-        buf.append(val & 0xff)
-        buf.append((val >> 8) & 0xff)
+        t = s / sample_rate
+        valor = int(amplitude * math.sin(2 * math.pi * frequencia * t))
+        bytes_list.append(converter_amostra_para_bytes(valor))
+    
+    return pygame.mixer.Sound(buffer=b"".join(bytes_list))
 
-    return pygame.mixer.Sound(buffer=bytes(buf))
 
 # Carrega os sons padrão gerados
 som_pulo = criar_som(440, 0.1)
@@ -79,7 +72,7 @@ som_colisao = criar_som(220, 0.1)
 fonte = pygame.font.Font(None, 36)
 fonte_game_over = pygame.font.Font(None, 48)
 
-class Dinossauro:
+class Dinossauro:   
     """Classe que representa o dinossauro no jogo."""
 
     X_POS = 80
@@ -101,19 +94,9 @@ class Dinossauro:
         self.retangulo = self.imagem.get_rect()
         self.retangulo.x = self.X_POS
         self.retangulo.y = self.Y_POS
-
-    def atualizar(self, entrada_usuario, fator_velocidade):
-        """Atualiza o estado do dinossauro com base na entrada do usuário."""
-        if self.agachado:
-            self.agachar()
-        if self.correndo:
-            self.correr()
-        if self.pulando:
-            self.pular()
-
-        if self.indice_passo >= 10:
-            self.indice_passo = 0
-
+         
+    def processar_input(self, entrada_usuario):
+    
         if entrada_usuario[pygame.K_SPACE] and not self.pulando:
             self.agachado = False
             self.correndo = False
@@ -127,6 +110,19 @@ class Dinossauro:
             self.agachado = False
             self.correndo = True
             self.pulando = False
+
+    def atualizar_movimento(self):
+
+        if self.agachado:
+            self.agachar()
+        elif self.correndo:
+            self.correr()
+        elif self.pulando:
+            self.pular()
+
+        if self.indice_passo >= 10:
+            self.indice_passo = 0
+        
 
     def agachar(self):
         """Agacha o dinossauro."""
@@ -324,7 +320,8 @@ while rodando:
     pontuacao += 1
     fator_velocidade = 1 + (pontuacao // 100) * 0.05  
 
-    dino.atualizar(entrada_usuario, fator_velocidade)
+    dino.processar_input(entrada_usuario)
+    dino.atualizar_movimento()
     dino.desenhar(tela)
     chao.atualizar(fator_velocidade)
     chao.desenhar(tela)
